@@ -1,6 +1,6 @@
 # Spec Runner for vim
 
-it runs your specs
+Runs rspec specs in vim
 
 ## Suggested Mappings:
 
