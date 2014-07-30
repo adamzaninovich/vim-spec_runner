@@ -8,7 +8,7 @@ function! spec_runner#Setfile()
   let s:file = @%
 endfunction
 
-function! spec_runner#setline()
+function! spec_runner#Setline()
   let s:line = line('.')
 endfunction
 
