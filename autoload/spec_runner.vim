@@ -1,51 +1,58 @@
-function! spec_runner#Run(filename)
-  :w
-  :silent !echo;echo;echo;echo;echo
-  exec ":!rspec " . a:filename
-endfunction
+" Utility functions
 
-function! spec_runner#Setfile()
+function! s:setfile()
   let s:file = @%
 endfunction
 
-function! spec_runner#Setline()
+function! s:setline()
   let s:line = line('.')
 endfunction
 
-function! spec_runner#Runfile(...)
-  if a:0
-    let command_suffix = a:1
+function! s:in_spec_file()
+  return match(expand("%"), '_spec.rb$') != -1
+endfunction
+
+function! s:get_suffix(has_suffix, suffix)
+  if a:has_suffix
+    return a:suffix
   else
-    let command_suffix = ""
     if exists("s:line")
       unlet s:line
     endif
   endif
+  return ""
+endfunction
 
-  " Run the tests for the previously-marked file.
-  let in_spec_file = match(expand("%"), '_spec.rb$') != -1
-  if in_spec_file
-    call spec_runner#Setfile()
+" Running Specs
+
+function! spec_runner#Run(filename)
+  :w
+  :silent !echo;echo;echo;echo;echo
+  exec ":!rspec ".a:filename
+endfunction
+
+function! spec_runner#Runfile(...)
+  if s:in_spec_file()
+    call s:setfile()
   elseif !exists("s:file")
-    return
+    return " display not available message?
   end
-  call spec_runner#Run(s:file . command_suffix)
+  call spec_runner#Run(s:file.s:get_suffix(a:0, a:1))
 endfunction
 
 function! spec_runner#Runline()
-  let in_spec_file = match(expand("%"), '_spec.rb$') != -1
-  if in_spec_file
-    call spec_runner#Setline()
+  if s:in_spec_file()
+    call s:setline()
   elseif !exists("s:line")
-    return
+    return " display not available message?
   end
-  call spec_runner#Runfile(":" . s:line)
+  call spec_runner#Runfile(":".s:line)
 endfunction
 
 function! spec_runner#Repeat()
   if exists("s:file")
     if exists("s:line")
-      call spec_runner#Run(s:file . ":" . s:line)
+      call spec_runner#Run(s:file.":".s:line)
     else
       call spec_runner#Run(s:file)
     endif
