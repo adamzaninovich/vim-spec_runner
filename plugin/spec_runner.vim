@@ -1,6 +1,6 @@
 " spec_runner.vim - useful commands for running specs
 " Maintainer:   Adam Zaninovich
-" Version:      0.2.1
+" Version:      0.2.3
 "
 " Suggested Mappings:
 " Run Specs on current line. Repeatable outside of spec
@@ -19,4 +19,8 @@
 " There is also a repeat function that will repeat the
 " last spec you ran in the way that you run it.
 
+command! SRRunAll call spec_runner#Run('spec')
+command! SRRunFile call spec_runner#Runfile()
+command! SRRunLine call spec_runner#Runline()
+command! SRRepeat call spec_runner#Repeat()
 
