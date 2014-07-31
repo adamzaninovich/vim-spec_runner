@@ -14,7 +14,7 @@ endfunction
 
 function! s:get_suffix(list_of_args)
   if len(a:list_of_args) == 1
-    return a:list_of_args[1]
+    return a:list_of_args[0]
   else
     if exists("s:line")
       unlet s:line
